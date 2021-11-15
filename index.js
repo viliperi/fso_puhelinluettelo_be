@@ -8,7 +8,7 @@ app.use(cors())
 
 morgan.token('req-body', (request, response) => {
     if (request.method === 'POST') {
-       return JSON.stringify(request.body)
+       return 'added: ' + JSON.stringify(request.body)
     } else {
         return null
     }
@@ -60,9 +60,8 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons/:id', (request, response) => {
-    console.log(request.params)
-    const id = Number(request.params.id)
 
+    const id = Number(request.params.id)
     const person = persons.find(p => p.id === id)
     
     if (person) {
@@ -84,9 +83,6 @@ const generateRandomId = () => {
 }
 
 app.post('/api/persons', (request, response) => {
-    
-    console.log('Creating', request.body)
-
     const body = request.body
 
     if (!body.name || !body.number) {
@@ -102,8 +98,6 @@ app.post('/api/persons', (request, response) => {
         name: body.name,
         number: body.number
     }
-
-    console.log(`Created`, person)
 
     persons = persons.concat(person)
     response.json(person)

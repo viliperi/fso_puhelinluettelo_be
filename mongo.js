@@ -3,7 +3,9 @@ const mongoose = require('mongoose')
 if (process.argv.length<3) {
     console.log('give password as an argument')
     process.exit(1)
-} else if (process.argv.length > 5) {
+}
+
+if (process.argv.length > 5) {
     console.log('too many arguments were given')
     process.exit(1)
 }

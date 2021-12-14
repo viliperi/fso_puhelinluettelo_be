@@ -1,6 +1,6 @@
 const express = require('express')
-const morgan = require('morgan')
 const app = express()
+const morgan = require('morgan')
 const cors = require('cors')
 require('dotenv').config()
 const Person = require('./models/person')
@@ -74,17 +74,14 @@ app.post('/api/persons', (request, response, next) => {
     if (body.name === undefined || body.number === undefined) {
         return response.status(400).json({error: 'name or number is missing'})
     }
-    
-/*     if (persons.some(p => p.name.toLocaleLowerCase() === body.name.toLocaleLowerCase())) {
-        return response.status(400).json({error: 'Person name must be unique.'})
-    } */
 
     const person = new Person({
         name: body.name,
-        number: body.number,
+        number: body.number
     })
 
-    person.save().then(savedPerson => {
+    person.save()
+    .then(savedPerson => {
         response.json(savedPerson)
     })
     .catch(error => next(error))
@@ -119,7 +116,11 @@ const errorHandler = (error, request, response, next) => {
     console.log(error.message)
 
     if (error.name === 'CastError') {
-        return response.status(400).send({ error: 'malformatted id'})
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+
+    if (error.name === 'ValidationError') {
+        return response.status(500).send({ error: 'Name must be at least 3 characters and number at least 8 characters long.' })
     }
 
     next(error)

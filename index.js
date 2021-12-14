@@ -110,7 +110,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-// Virheiden käsittely middleware. HOX: virheidenkäsittely midware otetaan käyttöön aina viimeiseksi.
+// Error handles middleware. HOX: Error handler midware should be applied last!
 
 const errorHandler = (error, request, response, next) => {
     console.log(error.message)
@@ -120,7 +120,7 @@ const errorHandler = (error, request, response, next) => {
     }
 
     if (error.name === 'ValidationError') {
-        return response.status(500).send({ error: 'Name must be at least 3 characters and number at least 8 characters long.' })
+        return response.status(400).send({ error: 'Name must be at least 3 characters and number at least 8 characters long.' })
     }
 
     next(error)
